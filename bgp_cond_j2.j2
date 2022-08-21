@@ -1,0 +1,19 @@
+{#%- for device_name in sw1,sw2 %#}
+
+int {{int}}
+ip address {{ip_address}}
+
+feature bgp
+router bgp {{ local_as }}
+address-family ipv4 unicast
+{%- for routes in advertised_routes %}
+network {{ routes }}
+{%- endfor %}
+neighbor {{peer1_ip}} remote-as {{peer1_as}}
+update-source lo0
+ebgp-multihop 2
+address-family ipv4 unicast
+{%- if peer_ipv6 %}
+address-family ipv6 unicast
+{%- endif %}
+{#%-endfor %#}
